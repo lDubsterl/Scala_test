@@ -9,7 +9,7 @@ import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.image.BufferedImage
 import java.io.*
 import javax.imageio.ImageIO
-import javax.swing.{JFrame, JMenu, JMenuBar, JMenuItem, JPanel, JScrollPane, JTextArea, SwingUtilities}
+import javax.swing.{JFrame, JMenu, JMenuBar, JMenuItem, JPanel, JScrollPane, JTextArea, SwingUtilities, WindowConstants}
 import scala.util.Random
 import math.pow
 
@@ -237,8 +237,20 @@ object Task {
 
   private def calculateStatistics(filePath: String): Array[Double] = {
     // Load the image using ImageIO
+    val localFrame = new JFrame()
+    localFrame.setSize(1280, 720)
+    localFrame.setLocationRelativeTo(null)
 
     var image: BufferedImage = ImageIO.read(new File(filePath))
+    val pane = new JPanel() {
+      override def paintComponent(g: Graphics): Unit = {
+        super.paintComponent(g)
+        g.drawImage(image, 0, 0, null)
+      }
+    }
+    localFrame.add(pane)
+    localFrame.setVisible(true)
+
     // Get the width and height of image
     val width = image.getWidth
     val height = image.getHeight
@@ -281,6 +293,7 @@ object Task {
   }
 
   val frame = new JFrame("My Application")
+  frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
   frame.setSize(800, 600)
   frame.setLocationRelativeTo(null)
   val textArea = new JTextArea()
@@ -288,6 +301,7 @@ object Task {
   textArea.setFont(font)
   textArea.setEditable(false)
   val scroller = new JScrollPane(textArea)
+
   def main(args: Array[String]): Unit = {
     val menuBar = new JMenuBar()
     val mainMenu = new JMenu("Tasks")
