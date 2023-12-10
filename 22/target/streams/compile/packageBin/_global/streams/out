@@ -1,7 +1,9 @@
 [0m[[0m[0mdebug[0m] [0m[0mPackaging D:\Projects\FProg\Scala_test\22\target\scala-2.13\hello-world_2.13-1.0.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Main$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  D:\Projects\FProg\Scala_test\22\target\scala-2.13\classes\Main$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Main.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  D:\Projects\FProg\Scala_test\22\target\scala-2.13\classes\Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	TokenizerExample$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Projects\FProg\Scala_test\22\target\scala-2.13\classes\TokenizerExample$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	TokenizerExample$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Projects\FProg\Scala_test\22\target\scala-2.13\classes\TokenizerExample$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	TokenizerExample.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Projects\FProg\Scala_test\22\target\scala-2.13\classes\TokenizerExample.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
