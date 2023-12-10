@@ -19,6 +19,6 @@ class ContactController @Inject()(val controllerComponents: ControllerComponents
    * a path of `/`.
    */
   def contact() = Action { implicit request: Request[AnyContent] =>
-    Ok("Contact page")
+    Ok(views.html.contact())
   }
 }

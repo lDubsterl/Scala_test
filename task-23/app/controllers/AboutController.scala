@@ -19,6 +19,6 @@ class AboutController @Inject()(val controllerComponents: ControllerComponents) 
    * a path of `/`.
    */
   def about() = Action { implicit request: Request[AnyContent] =>
-    Ok("About page")
+    Ok(views.html.about())
   }
 }
