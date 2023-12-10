@@ -1,0 +1,4 @@
+[debug] [root-22-test] Classpath dependencies List()
+[debug] [root-22-test] Dependencies from configurations List(root-22)
+[debug] Bloop wrote the configuration of project 'root-22-test' to 'D:\Projects\FProg\Scala_test\22\.bloop\root-22-test.json'
+[success] Generated .bloop\root-22-test.json

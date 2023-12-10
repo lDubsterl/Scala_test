@@ -1,0 +1,6 @@
+[0m[[0m[31merror[0m] [0m[0mD:\Projects\FProg\Scala_test\image_processing\src\main\scala\Main.scala:41:23: missing argument list for method apply in trait IterableFactory[0m
+[0m[[0m[31merror[0m] [0m[0mUnapplied methods are only converted to functions when a function type is expected.[0m
+[0m[[0m[31merror[0m] [0m[0mYou can make this conversion explicit by writing `apply _` or `apply(_)` instead of `apply`.[0m
+[0m[[0m[31merror[0m] [0m[0m    var numbers = List[Double][0m
+[0m[[0m[31merror[0m] [0m[0m                      ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
