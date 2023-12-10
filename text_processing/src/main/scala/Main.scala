@@ -81,7 +81,6 @@
 // }
 
 /* ------------------------------------------- РАЗБИЕНИЕ НА ТОКЕНЫ -------------------------------------------*/
-
 import java.io.FileInputStream
 import opennlp.tools.tokenize.{TokenizerME, TokenizerModel}
 
