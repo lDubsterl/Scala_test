@@ -2,12 +2,16 @@ import opennlp.tools.chunker.{ChunkerME, ChunkerModel}
 import opennlp.tools.namefind.{NameFinderME, TokenNameFinderModel}
 import opennlp.tools.postag.{POSModel, POSTaggerME}
 import opennlp.tools.tokenize.{TokenizerME, TokenizerModel}
+import org.apache.commons.math3.optim.PointValuePair
+import org.apache.commons.math3.optim.linear.{LinearConstraint, LinearConstraintSet, LinearObjectiveFunction, Relationship, SimplexSolver}
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics
 
 import java.awt.{Font, Graphics, Menu}
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.image.BufferedImage
 import java.io.*
+import java.util
 import javax.imageio.ImageIO
 import javax.swing.{JFrame, JMenu, JMenuBar, JMenuItem, JPanel, JScrollPane, JTextArea, SwingUtilities, WindowConstants}
 import scala.util.Random
@@ -61,6 +65,16 @@ object Task {
       }
     })
     items.apply(7).addActionListener(new ActionListener {
+      override def actionPerformed(e: ActionEvent): Unit = {
+        linearProg()
+      }
+    })
+    items.apply(8).addActionListener(new ActionListener {
+      override def actionPerformed(e: ActionEvent): Unit = {
+        statistics()
+      }
+    })
+    items.apply(9).addActionListener(new ActionListener {
       override def actionPerformed(e: ActionEvent): Unit = {
         System.exit(0)
       }
@@ -221,6 +235,67 @@ object Task {
     fileReader.close()
   }
 
+  private def linearProg(): Unit = {
+    textArea.setText("")
+    // create a constraint: 2x + 3y <= 4
+    val coeffs: Array[Double] = Array(2.0, 3.0)
+    val coeffs2: Array[Double] = Array(1.0, 3.0) // задаются для целевой ф-ии
+    val coeffs3: Array[Double] = Array(1.0, 2.0)
+    val relationship: Relationship = Relationship.LEQ // задаёт отношения
+    val value: Double = 4.0
+    val coeffs1: Array[Double] = Array(-1.0, 3.0)
+    val relationship2: Relationship = Relationship.GEQ
+    val relationship3: Relationship = Relationship.GEQ
+    val value2: Double = 1.0
+    val value3: Double = 4.0
+    val objectiveFunction = new LinearObjectiveFunction(coeffs2, 0.0)
+    val constraint: LinearConstraint = new LinearConstraint(coeffs, relationship, value)
+    val constraint2: LinearConstraint = new LinearConstraint(coeffs1, relationship2, value2)
+    val constraint3: LinearConstraint = new LinearConstraint(coeffs3, relationship3, value3)
+
+    // Solve the optimization
+    val solver = new SimplexSolver() // симплекс-метод
+
+    val constraintsList2: java.util.List[LinearConstraint] = new util.ArrayList[LinearConstraint]()
+    constraintsList2.add(constraint)
+    constraintsList2.add(constraint2)
+    constraintsList2.add(constraint3)
+    val result: PointValuePair = solver.optimize(objectiveFunction, new LinearConstraintSet(constraintsList2), GoalType.MINIMIZE) // указывается целевая функция, 																		      //линейные ограничения, тип целевой 																	     // функции - направлена на минимум
+    // Print the solution
+    textArea.append(s"Minimum value: ${result.getValue}\n") // это результат целевой функции, в итоге выводит это в точке оптимума
+    textArea.append(s"Solution: ${result.getPoint.mkString(", ")}\n") // значения переменных в точке оптимума
+  }
+
+  private def statistics(): Unit = {
+    textArea.setText("")
+    // Создать массив данных для анализа
+    val data = Array(1.2, 3.4, 5.6, 7.8, 9.0)
+
+    // Создать объект DescriptiveStatistics и добавить данные
+    val stats = new DescriptiveStatistics()
+    for (value <- data) {
+      stats.addValue(value)
+    }
+
+    // Вычислить основные статистические показатели
+    val mean = stats.getMean // Среднее значение
+    val std = stats.getStandardDeviation // Стандартное отклонение
+    val min = stats.getMin // Минимальное значение
+    val max = stats.getMax // Максимальное значение
+    val median = stats.getPercentile(50) // Медиана
+    val quartile1 = stats.getPercentile(25) // Первый квартиль
+    val quartile3 = stats.getPercentile(75) // Третий квартиль
+
+    // Вывести результаты на экран
+    textArea.append(s"Среднее значение: $mean\n")
+    textArea.append(s"Стандартное отклонение: $std\n")
+    textArea.append(s"Минимальное значение: $min\n")
+    textArea.append(s"Максимальное значение: $max\n")
+    textArea.append(s"Медиана: $median\n")
+    textArea.append(s"Первый квартиль: $quartile1\n")
+    textArea.append(s"Третий квартиль: $quartile3")
+  }
+
   private def readPixels(): Unit = {
     textArea.setText("")
     val image: BufferedImage = ImageIO.read(new File("image.PNG"))
@@ -312,8 +387,10 @@ object Task {
     val menu5 = new JMenuItem("Divide text to tokens")
     val menu6 = new JMenuItem("Identify entities")
     val menu7 = new JMenuItem("Divide text to groups")
+    val menu8 = new JMenuItem("Linear programming")
+    val menu9 = new JMenuItem("Statistics")
     val exit = new JMenuItem("Exit")
-    addListeners(Array(menu1, menu2, menu3, menu4, menu5, menu6, menu7, exit))
+    addListeners(Array(menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, exit))
     frame.add(scroller)
     menuBar.add(mainMenu)
     mainMenu.add(menu1)
@@ -323,6 +400,8 @@ object Task {
     mainMenu.add(menu5)
     mainMenu.add(menu6)
     mainMenu.add(menu7)
+    mainMenu.add(menu8)
+    mainMenu.add(menu9)
     mainMenu.addSeparator()
     mainMenu.add(exit)
     frame.setJMenuBar(menuBar)
