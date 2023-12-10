@@ -4,12 +4,12 @@ import opennlp.tools.postag.{POSModel, POSTaggerME}
 import opennlp.tools.tokenize.{TokenizerME, TokenizerModel}
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics
 
-import java.awt.{Graphics, Menu}
+import java.awt.{Font, Graphics, Menu}
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.image.BufferedImage
 import java.io.*
 import javax.imageio.ImageIO
-import javax.swing.{JFrame, JMenu, JMenuBar, JMenuItem, JPanel, SwingUtilities}
+import javax.swing.{JFrame, JMenu, JMenuBar, JMenuItem, JPanel, JScrollPane, JTextArea, SwingUtilities}
 import scala.util.Random
 import math.pow
 
@@ -23,40 +23,41 @@ object Task {
     })
     items.apply(1).addActionListener(new ActionListener {
       override def actionPerformed(e: ActionEvent): Unit = {
-        readPixels()
+        readWriteFiles()
       }
     })
     items.apply(2).addActionListener(new ActionListener {
       override def actionPerformed(e: ActionEvent): Unit = {
-        compareImages()
+        readPixels()
       }
     })
     items.apply(3).addActionListener(new ActionListener {
       override def actionPerformed(e: ActionEvent): Unit = {
+        compareImages()
+      }
+    })
+    items.apply(4).addActionListener(new ActionListener {
+      override def actionPerformed(e: ActionEvent): Unit = {
+        textArea.setText("")
         val modelIn = new FileInputStream("en-token.bin")
         val model = new TokenizerModel(modelIn)
         val tokenizer = new TokenizerME(model)
 
         val tokens = tokenizer.tokenize("John Smith is a software engineer at Google.")
 
-        tokens.foreach(println)
+        tokens.foreach(l => textArea.append(l + "\n"))
 
         modelIn.close()
       }
     })
-    items.apply(4).addActionListener(new ActionListener {
+    items.apply(5).addActionListener(new ActionListener {
       override def actionPerformed(e: ActionEvent): Unit = {
         identifyEntities()
       }
     })
-    items.apply(5).addActionListener(new ActionListener {
-      override def actionPerformed(e: ActionEvent): Unit = {
-        identifyGroups()
-      }
-    })
     items.apply(6).addActionListener(new ActionListener {
       override def actionPerformed(e: ActionEvent): Unit = {
-
+        identifyGroups()
       }
     })
     items.apply(7).addActionListener(new ActionListener {
@@ -68,6 +69,7 @@ object Task {
   }
 
   private def identifyEntities(): Unit = {
+    textArea.setText("")
     val tokenizerModelIn = new FileInputStream("en-token.bin")
     val tokenizerModel = new opennlp.tools.tokenize.TokenizerModel(tokenizerModelIn)
     val tokenizer = new opennlp.tools.tokenize.TokenizerME(tokenizerModel)
@@ -89,11 +91,12 @@ object Task {
     for (span <- spans) {
       val entityType = span.getType
       val entity = tokens.slice(span.getStart, span.getEnd).mkString(" ")
-      println(s"$entityType: $entity")
+      textArea.append(s"$entityType: $entity\n")
     }
   }
 
   private def identifyGroups(): Unit = {
+    textArea.setText("")
     // Load tokenizer model
     val tokenizerModelIn = new FileInputStream("en-token.bin")
     val tokenizerModel = new TokenizerModel(tokenizerModelIn)
@@ -126,11 +129,12 @@ object Task {
 
     // Print the chunks
     for (i <- chunks.indices) {
-      println(s"${chunks(i)}: ${tokens(i)}")
+      textArea.append(s"${chunks(i)}: ${tokens(i)}\n")
     }
   }
 
   private def readFile(): Unit = {
+    textArea.setText("")
     val fileHandle = new File("text.txt")
     val fis = new FileInputStream(fileHandle)
     val bis = new BufferedInputStream(fis)
@@ -139,19 +143,86 @@ object Task {
     try {
       while (dis.available() != 0) {
         val line = dis.readLine()
-        println(line)
+        textArea.append(line + "\n")
       }
     } catch {
       case e: IOException =>
-        println("An error occured while reading the file:" + e.getMessage)
+        textArea.append("An error occured while reading the file:" + e.getMessage + "\n")
     }
     finally {
       dis.close()
-      println("Finished file reading")
+      textArea.append("Finished file reading\n")
     }
   }
 
+  private def readWriteFiles(): Unit = {
+    // WRITE
+
+    // Method 1
+    // Easiest way
+    val fileWriter = new FileWriter(new File("test1.txt"))
+    fileWriter.write("File writer test")
+    fileWriter.close()
+
+    // Method 2
+    // For formatted text, like printf
+    val printWriter = new PrintWriter(new File("test2.txt"))
+    val s = "PrintWriter"
+    val number = 2
+    printWriter.printf("This is a %dnd method using %s", number, s)
+    printWriter.close()
+
+    // Method 3
+    // Stores information in the form of bytes, unlike the 1st and 2nd methods (stores it as a string)
+    val dataOutputStream = new DataOutputStream(new FileOutputStream(new File("test3.txt")))
+    for (i <- 1 to 10) {
+      dataOutputStream.writeInt(i)
+    }
+    dataOutputStream.close()
+
+    // Method 3
+    // Writes more efficiently. Using buffer for bulk write?
+    val bufferedPrintWriter = new BufferedWriter(new PrintWriter(new File("data.txt")))
+    for (i <- 1 to 25) {
+      bufferedPrintWriter.write(i.toString)
+    }
+    bufferedPrintWriter.close()
+
+
+
+    // READ
+    textArea.setText("")
+    //Method 1
+    // Native method to read from a file
+    val fileName1 = "test1.txt"
+    scala.io.Source.fromFile(fileName1).getLines().foreach(l => textArea.append(l + "\n"))
+
+    // Method 2
+    // Efficiently reading from a file. Using buffer that provide bulk read from disk?
+    val fileName2 = "test2.txt"
+    val bufferedSource = scala.io.Source.fromFile(fileName2)
+    val text = bufferedSource.getLines().mkString
+    textArea.append(text + "\n")
+    bufferedSource.close()
+
+    // Method 3
+    // Using Java API
+    val fileName3 = "test2.txt"
+    val fileReader = new BufferedReader(new FileReader(fileName3))
+
+    def handleRead(line: String): Unit = {
+      val newLine = fileReader.readLine()
+      if (newLine != null) // if there are more lines to read
+        handleRead(newLine)
+        textArea.append(newLine + "\n")
+    }
+
+    handleRead(fileReader.readLine())
+    fileReader.close()
+  }
+
   private def readPixels(): Unit = {
+    textArea.setText("")
     val image: BufferedImage = ImageIO.read(new File("image.PNG"))
     for (y <- 0 until image.getHeight) {
       for (x <- 0 until image.getWidth) {
@@ -159,7 +230,7 @@ object Task {
         val red = (pixel >> 16) & 0xff
         val green = (pixel >> 8) & 0xff
         val blue = pixel & 0xff
-        println(s"Pixel at ($x, $y): (R:$red, G:$green, B:$blue)")
+        textArea.append(s"Pixel at ($x, $y): (R:$red, G:$green, B:$blue)" + "\n")
       }
     }
   }
@@ -188,12 +259,13 @@ object Task {
     numbers.foreach(stats.addValue)
     val mean = stats.getMean
     val stdDev = stats.getStandardDeviation
-    println(s"Mean value: $mean")
-    println(s"Stdev: $stdDev")
+    textArea.append(s"Mean value: $mean" + "\n")
+    textArea.append(s"Stdev: $stdDev" + "\n\n")
     Array(mean, stdDev)
   }
 
   private def compareImages(): Unit = {
+    textArea.setText("")
     var picStatistics = calculateStatistics("one.jpg")
     val mean1 = picStatistics(0)
     val stdDev1 = picStatistics(1)
@@ -201,28 +273,34 @@ object Task {
     val mean2 = picStatistics(0)
     val stdDev2 = picStatistics(1)
     val similarity = (mean1 * mean2 + stdDev1 * stdDev2) / math.sqrt(pow(mean1, 2) + pow(stdDev1, 2)) / math.sqrt(pow(mean2, 2) + pow(stdDev2, 2))
-    println(similarity)
+    textArea.append(similarity.toString + "\n")
     if (similarity > 0.99d)
-      println("Pictures are equal")
+      textArea.append("Pictures are equal")
     else
-      println("Pictures are not equal")
+      textArea.append("Pictures are not equal")
   }
 
+  val frame = new JFrame("My Application")
+  frame.setSize(800, 600)
+  frame.setLocationRelativeTo(null)
+  val textArea = new JTextArea()
+  val font = new Font(Font.DIALOG, Font.BOLD, 12)
+  textArea.setFont(font)
+  textArea.setEditable(false)
+  val scroller = new JScrollPane(textArea)
   def main(args: Array[String]): Unit = {
-    val frame = new JFrame("My Application")
-    frame.setSize(800, 600)
-    frame.setLocationRelativeTo(null)
     val menuBar = new JMenuBar()
     val mainMenu = new JMenu("Tasks")
     val menu1 = new JMenuItem("Read file")
-    val menu2 = new JMenuItem("Read pixels' array")
-    val menu3 = new JMenuItem("Images' compare and characteristics")
-    val menu4 = new JMenuItem("Divide text to tokens")
-    val menu5 = new JMenuItem("Identify entities")
-    val menu6 = new JMenuItem("Divide text to groups")
+    val menu2 = new JMenuItem("Write and read files")
+    val menu3 = new JMenuItem("Read pixels' array")
+    val menu4 = new JMenuItem("Images' compare and characteristics")
+    val menu5 = new JMenuItem("Divide text to tokens")
+    val menu6 = new JMenuItem("Identify entities")
     val menu7 = new JMenuItem("Divide text to groups")
     val exit = new JMenuItem("Exit")
     addListeners(Array(menu1, menu2, menu3, menu4, menu5, menu6, menu7, exit))
+    frame.add(scroller)
     menuBar.add(mainMenu)
     mainMenu.add(menu1)
     mainMenu.add(menu2)

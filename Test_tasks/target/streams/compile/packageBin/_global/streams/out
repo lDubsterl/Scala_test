@@ -1,1 +1,25 @@
-[0m[[0m[0mdebug[0m] [0m[0mJar uptodate: D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\test_tasks_3-0.1.0-SNAPSHOT.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0mPackaging D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\test_tasks_3-0.1.0-SNAPSHOT.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$$anon$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$$anon$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$$anon$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$$anon$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$$anon$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$$anon$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$$anon$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$$anon$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$$anon$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$$anon$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$$anon$7.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$$anon$7.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$$anon$8.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$$anon$8.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Task.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\Homework\Scala_test\Test_tasks\target\scala-3.3.1\classes\Task.tasty[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
